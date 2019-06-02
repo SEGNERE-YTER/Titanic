@@ -51,10 +51,32 @@ embarked.columns = ['embarked C','embarked Q','embarked S']
 data_test = data_test.join(embarked)
 
 #centrer et réduire
-moyenne_age = np.mean(data_train['Age'])
-ecart_type_age = np.std(data_train['Age'])
-data_train['Age'] = (data_train['Age'] - moyenne_age)/ecart_type_age
-data_test['Age'] = (data_test['Age'] - moyenne_age)/ecart_type_age
+data_train_f = data_train[data_train["Sex"] == 'female']
+data_train_m = data_train[data_train["Sex"] == 'male']
+
+data_test_f = data_test[data_test["Sex"] == 'female']
+data_test_m = data_test[data_test["Sex"] == 'male']
+
+#moyenne_age = np.mean(data_train['Age'])
+#ecart_type_age = np.std(data_train['Age'])
+#data_train['Age'] = (data_train['Age'] - moyenne_age)/ecart_type_age
+#data_test['Age'] = (data_test['Age'] - moyenne_age)/ecart_type_age
+
+moyenne_age_f = np.mean(data_train_f['Age'])
+ecart_type_age_f = np.std(data_train_m['Age'])
+data_train_f['Age'] = (data_train_f['Age'] - moyenne_age_f)/ecart_type_age_f
+data_test_f['Age'] = (data_test_f['Age'] - moyenne_age_f)/ecart_type_age_f
+
+moyenne_age_m = np.mean(data_train[data_train["Sex"] == 'male']['Age'])
+ecart_type_age_m = np.std(data_train[data_train["Sex"]== 'male']['Age'])
+data_train_m["Age"] = (data_train_m["Age"] - moyenne_age_m)/ecart_type_age_m
+data_test_m["Age"] = (data_test_m["Age"] - moyenne_age_m)/ecart_type_age_m
+
+#data_test["Age"][np.isnan(data_test["Age"])] = np.mean(data_test['Age'])
+data_test_f["Age"][np.isnan(data_test_f["Age"])] = np.mean(data_test_f["Age"])
+data_test_m['Age'][np.isnan(data_test_m["Age"])] = np.mean(data_test_m["Age"])
+
+data_test = pd.concat([data_test_f, data_test_m])
 
 moyenne_SibSp = np.mean(data_train['SibSp'])
 ecart_type_SibSp = np.std(data_train['SibSp'])
@@ -75,7 +97,6 @@ data_test['Fare'] = (data_test['Fare'] - moyenne_Fare)/ecart_type_Fare
 #col_mask=data_test.isnull().any(axis=0) 
 data_train["Age"][np.isnan(data_train["Age"])] = 0
 
-data_test["Age"][np.isnan(data_test["Age"])] = np.mean(data_test['Age'])
-
-
 data_test["Fare"][np.isnan(data_test["Fare"])] = np.mean(data_test['Fare'])
+
+data_test = data_test.sort_values(by = 'PassengerId')
