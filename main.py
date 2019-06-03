@@ -76,6 +76,7 @@ data_test_m["Age"] = (data_test_m["Age"] - moyenne_age_m)/ecart_type_age_m
 data_test_f["Age"][np.isnan(data_test_f["Age"])] = np.mean(data_test_f["Age"])
 data_test_m['Age'][np.isnan(data_test_m["Age"])] = np.mean(data_test_m["Age"])
 
+data_train = pd.concat([data_train_f, data_train_m])
 data_test = pd.concat([data_test_f, data_test_m])
 
 moyenne_SibSp = np.mean(data_train['SibSp'])
@@ -99,4 +100,5 @@ data_train["Age"][np.isnan(data_train["Age"])] = 0
 
 data_test["Fare"][np.isnan(data_test["Fare"])] = np.mean(data_test['Fare'])
 
+data_train = data_train.sort_values(by = 'PassengerId')
 data_test = data_test.sort_values(by = 'PassengerId')
